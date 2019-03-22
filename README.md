@@ -26,9 +26,9 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
-- [ ] Describe Middleware?
+- [ ] Describe Middleware.
 
-- [ ] Describe a Resource?
+- [ ] Describe a Resource.
 
 - [ ] What can the API return to help clients know if a request was successful?
 
