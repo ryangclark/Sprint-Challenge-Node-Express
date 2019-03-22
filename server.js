@@ -8,6 +8,6 @@ const server = express();
 server.use(express.json());
 
 server.use('/api/actions', actionsRouter);
-server.use('/api/projectcs', projectsRouter);
+server.use('/api/projects', projectsRouter);
 
 module.exports = server;
