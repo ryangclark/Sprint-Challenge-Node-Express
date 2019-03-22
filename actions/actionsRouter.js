@@ -5,6 +5,23 @@ const projectsDB = require('../data/helpers/projectModel');
 
 const router = express.Router();
 
+function descriptionLengthChecker(req, res, next) {
+  if (req.body.hasOwnProperty('description')){
+    const description = req.body.description;
+    if (typeof description !== 'string' || description.length > 128) {
+      return res
+        .status(400)
+        .json({
+          message:
+            'The `description` property must be a string no longer than 128 characters in length.'
+        });
+    }
+  }
+  next();
+}
+
+router.use(descriptionLengthChecker);
+
 router.get('/', async (req, res) => {
   try {
     const actions = await db.get();
@@ -50,7 +67,7 @@ router.post('/', async (req, res) => {
       let validProjectID = false;
       const projects = await projectsDB.get();
       for (let project of projects) {
-        if (project.id === req.body.project_id) {
+        if (project.id.toString() === req.body.project_id) {
           validProjectID = true;
         }
       }
@@ -104,7 +121,7 @@ router.put('/:id', async (req, res) => {
     let validProjectID = false;
     const projects = await projectsDB.get();
     for (let project of projects) {
-      if (project.id === req.body.project_id) {
+      if (project.id.toString() === req.body.project_id) {
         validProjectID = true;
       }
     }

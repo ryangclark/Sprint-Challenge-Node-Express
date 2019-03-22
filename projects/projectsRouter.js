@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
   try {
     const projects = await db.get();
     for (let project of projects) {
-      if (project.id === req.params.id) {
+      if (project.id.toString() === req.params.id) {
         res.status(200).json(project);
       }
     }
