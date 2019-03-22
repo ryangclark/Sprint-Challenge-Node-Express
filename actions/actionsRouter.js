@@ -89,7 +89,7 @@ router.put('/:id', async (req, res) => {
     } else {
       res.status(400).json({
         message: `Actions can only include properties 
-          of 'description', 'project_id', and 'notes'.`
+          of 'completed', 'description', 'project_id', and 'notes'.`
       });
     }
   }
