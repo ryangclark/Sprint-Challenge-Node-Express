@@ -1,6 +1,7 @@
 const express = require('express');
 
 const db = require('../data/helpers/actionModel');
+const projectsDB = require('../data/helpers/projectModel');
 
 const router = express.Router();
 
@@ -46,13 +47,19 @@ router.post('/', async (req, res) => {
           'Please provide `description`, `notes`, and `project_id` properties in your request body.'
       });
     } else {
-      const action = await db.insert(req.body);
-      // TODO: Need to test how this handles a req with a bad `project_id`
-      if (!action) {
+      let validProjectID = false;
+      const projects = await projectsDB.get();
+      for (let project of projects) {
+        if (project.id === req.body.project_id) {
+          validProjectID = true;
+        }
+      }
+      if (projects && !validProjectID) {
         res.status(404).json({
           message: `No project with ID of ${req.body.project_id} found.`
         });
       } else {
+        const action = await db.insert(req.body);
         res.status(201).json(action);
       }
     }
@@ -83,26 +90,37 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  for (let key of req.body.keys()) {
+  console.log('req.body: ');
+  for (let key of Object.keys(req.body)) {
     if (['project_id', 'description', 'notes', 'completed'].includes(key)) {
       continue;
     } else {
-      res.status(400).json({
-        message: `Actions can only include properties 
-          of 'completed', 'description', 'project_id', and 'notes'.`
+      return res.status(400).json({
+        message: `Actions can only include properties of 'completed', 'description', 'project_id', and 'notes'.`
       });
     }
   }
   try {
-    const updatedAction = await db.update(req.params.id, req.body);
-    if (!updatedAction) {
-      res
-        .status(404)
-        .json({
+    let validProjectID = false;
+    const projects = await projectsDB.get();
+    for (let project of projects) {
+      if (project.id === req.body.project_id) {
+        validProjectID = true;
+      }
+    }
+    if (projects && !validProjectID) {
+      return res.status(404).json({
+        message: `No project with ID of ${req.body.project_id} found.`
+      });
+    } else {
+      const updatedAction = await db.update(req.params.id, req.body);
+      if (!updatedAction) {
+        return res.status(404).json({
           message: `An action with ID ${req.params.id} could not be found.`
         });
-    } else {
-      res.status(201).json(updatedAction);
+      } else {
+        return res.status(201).json(updatedAction);
+      }
     }
   } catch (error) {
     console.error(error);

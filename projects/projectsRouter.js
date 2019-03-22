@@ -18,13 +18,16 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const project = await db.get(req.params.id);
-    if (!project) {
-      res.status(404).json({
-        message: `An action with ID ${req.params.id} could not be found.`
+    const projects = await db.get();
+    for (let project of projects) {
+      if (project.id === req.params.id) {
+        res.status(200).json(project);
+      }
+    }
+    if (projects) {
+      return res.status(404).json({
+        message: `No project with ID of ${req.params.id} found.`
       });
-    } else {
-      res.status(200).json(project);
     }
   } catch (error) {
     console.error(error);
