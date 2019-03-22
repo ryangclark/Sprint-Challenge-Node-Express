@@ -6,15 +6,13 @@ const projectsDB = require('../data/helpers/projectModel');
 const router = express.Router();
 
 function descriptionLengthChecker(req, res, next) {
-  if (req.body.hasOwnProperty('description')){
+  if (req.body.hasOwnProperty('description')) {
     const description = req.body.description;
     if (typeof description !== 'string' || description.length > 128) {
-      return res
-        .status(400)
-        .json({
-          message:
-            'The `description` property must be a string no longer than 128 characters in length.'
-        });
+      return res.status(400).json({
+        message:
+          'The `description` property must be a string no longer than 128 characters in length.'
+      });
     }
   }
   next();
@@ -107,7 +105,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  console.log('req.body: ');
   for (let key of Object.keys(req.body)) {
     if (['project_id', 'description', 'notes', 'completed'].includes(key)) {
       continue;
@@ -118,17 +115,19 @@ router.put('/:id', async (req, res) => {
     }
   }
   try {
-    let validProjectID = false;
-    const projects = await projectsDB.get();
-    for (let project of projects) {
-      if (project.id.toString() === req.body.project_id) {
-        validProjectID = true;
+    if (req.body.hasOwnProperty('project_id')) {
+      let validProjectID = false;
+      const projects = await projectsDB.get();
+      for (let project of projects) {
+        if (project.id.toString() === req.body.project_id) {
+          validProjectID = true;
+        }
       }
-    }
-    if (projects && !validProjectID) {
-      return res.status(404).json({
-        message: `No project with ID of ${req.body.project_id} found.`
-      });
+      if (projects && !validProjectID) {
+        return res.status(404).json({
+          message: `No project with ID of ${req.body.project_id} found.`
+        });
+      }
     } else {
       const updatedAction = await db.update(req.params.id, req.body);
       if (!updatedAction) {
