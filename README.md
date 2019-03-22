@@ -24,26 +24,50 @@ In this challenge, create a web API around the following resources: `Projects` a
 
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
-- [ ] Mention two parts of Express that you learned about this week.
+- [x] Mention two parts of Express that you learned about this week.
 
-- [ ] Describe Middleware.
+  We learned about server-side routing in Express. Routing is middleware that allows the Express server to be written in modular form, allowing for singularity of concern for each route.
 
-- [ ] Describe a Resource.
+  We also learned about response codes and error handling. These are important to allow the requester to know what might have happened – either success or failure – with their response.
 
-- [ ] What can the API return to help clients know if a request was successful?
+- [x] Describe Middleware.
 
-- [ ] How can we partition our application into sub-applications?
+  Middleware is a function or package that runs between the intial request to the Express server and the response. It can be pretty much anything. If you see `server.use()`, it's middleware. 
+  
+  For instance, Express routing is middleware, just as `server.use(express.json())` is middleware. Neat!
+
+- [x] Describe a Resource.
+
+  In RESTful land, *everything* is a resource. Yay!
+
+  That means that anything sent from a server to a client is a resource. When the client requests something from a server, that's a resource. So, the endpoint located at `/api/users` is a resource, and the client may request different things from that endpoint using the HTTP verbs, such as `GET`, `POST`, `DELETE`, and `PUT`.
+
+- [x] What can the API return to help clients know if a request was successful?
+
+  A response code! Yay!
+
+  From Wikipedia:
+
+  * 1XX is informational (who uses these?)
+  * 2XX is successfull (hooray!)
+  * 3XX is redirection (I've used these before when I changed a URL for an article that had already been shared via social media, so the link no longer worked. Whoops!)
+  * 4XX is client error (like a bad request)
+  * 5XX is a server error (uh oh!)
+
+- [x] How can we partition our application into sub-applications?
+
+  Modular components and routing!
 
 ## Project Setup
 
 Follow these steps to set up and work on your project:
 
-- [ ] Create a forked copy of this project.
-- [ ] Add your _Project Manager_ as collaborator on Github.
-- [ ] Clone your forked version of the Repository.
-- [ ] Create a new Branch on the clone: git checkout -b `<firstName-lastName>`.
-- [ ] Implement the project on this Branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [x] Create a forked copy of this project.
+- [x] Add your _Project Manager_ as collaborator on Github.
+- [x] Clone your forked version of the Repository.
+- [x] Create a new Branch on the clone: git checkout -b `<firstName-lastName>`.
+- [x] Implement the project on this Branch, committing changes regularly.
+- [x] Push commits: git push origin `<firstName-lastName>`.
 
 Follow these steps for completing your project.
 
