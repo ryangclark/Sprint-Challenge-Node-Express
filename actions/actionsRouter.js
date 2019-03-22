@@ -111,3 +111,5 @@ router.put('/:id', async (req, res) => {
       .json({ message: 'The request could not be completed.', error: error });
   }
 });
+
+module.exports = router;
